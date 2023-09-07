@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberRecognizing", "Number_recognizing\NumberRecognizing.csproj", "{0527FC7A-9F7C-49E6-86A6-929696D62146}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0527FC7A-9F7C-49E6-86A6-929696D62146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0527FC7A-9F7C-49E6-86A6-929696D62146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0527FC7A-9F7C-49E6-86A6-929696D62146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0527FC7A-9F7C-49E6-86A6-929696D62146}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69AEB88B-CB52-4CF6-BDC5-F88DA3CBA4FE}
+	EndGlobalSection
+EndGlobal
