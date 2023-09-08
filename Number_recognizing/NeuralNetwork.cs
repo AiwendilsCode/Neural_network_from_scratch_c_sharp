@@ -44,11 +44,11 @@ namespace Number_recognizing
 
             this.numHidden = numHidden;
             this.numOutput = numOutput;
-            this.epochs = Epochs;
-            this.trainPercentage = TrainPercentage; // ending accuracy
-            this.batchSize = BatchSize;
-            this.desiredOutputs = DesiredOutputs;
-            this.numLayers = NumLayers;
+            epochs = Epochs;
+            trainPercentage = TrainPercentage; // ending accuracy
+            batchSize = BatchSize;
+            desiredOutputs = DesiredOutputs;
+            numLayers = NumLayers;
             this.momentum = momentum;
             this.learnRate = learnRate;
             numInput = input[0].Length;
@@ -64,6 +64,7 @@ namespace Number_recognizing
             hGrads = new double[NumLayers][];
             prevHiddenBiasesDeltas = new double[numLayers][];
             prevHiddenDeltas = new double[numLayers][][];
+
             for (int i = 0; i < hWeights.Length; i++) // init hidden weights
             {
                 hWeights[i] = new double[numHidden][];
@@ -184,12 +185,15 @@ namespace Number_recognizing
         public void Train()
         {
             int[] numbers = new int[numOutput]; // how many samples of all digits are there
+
             foreach (byte b in desiredOutputs)
             {
                 numbers[b]++;
             }
+
             int correct;
             int[] numCorrect = new int[numOutput]; // how many times correct predicted every digit
+
             for (int e = 1; e <= epochs && accuracy < trainPercentage; e++)
             {
                 correct = 0;
@@ -206,10 +210,11 @@ namespace Number_recognizing
 
                     double[] currInput = input[indexes[i]];
                     outputs[i] = ComputeOutput(currInput);
+
                     //if (desiredOutputs[indexes[i]] != outputs[i]) // adjust weights and biases only if predicted incorrectly
                     //{
-                        GetGrads(desiredOutputs[indexes[i]], "normal");
-                        UpdateWeights(currInput);
+                    GetGrads(desiredOutputs[indexes[i]], "normal");
+                    UpdateWeights(currInput);
                     //}
                     if (desiredOutputs[indexes[i]] == outputs[i])
                     {
@@ -238,7 +243,7 @@ namespace Number_recognizing
             int computed;
             computed = ComputeOutput(input);
             return computed;
-        } 
+        }
 
         public double TestAll(double[][] input, byte[] desOuts) // test all images and return accuracy in percentage
         {
@@ -319,78 +324,38 @@ namespace Number_recognizing
         private void GetGrads(int desired, string mode) // derivation of function softmax y(1 - y) and multiply with delta | tanh derivation (1 - y)(1 + y)
         {
             double[] desValues = new double[numOutput];
-            switch (mode)
+
+            for (int i = 0; i < hGrads.Length; i++)
             {
-                case "mse": // not working
-                    double difference;
-                    for (int i = 0; i < hGrads.Length; i++)
-                    {
-                        ToZeros(hGrads[i]);
-                    }
-                    ToZeros(oGrads);
-                    desValues[desired] = 1;
-                    for (int i = 0; i < numOutput; i++)
-                    {
-                        double derivative = oSums[i] * (1 - oSums[i]);
-                        oGrads[i] = derivative * (desValues[i] - oSums[i]) * mse;
-                    }
+                ToZeros(hGrads[i]);
+            }
+            ToZeros(oGrads);
+            desValues[desired] = 1;
+            for (int i = 0; i < numOutput; i++)
+            {
+                double derivative = oSums[i] * (1 - oSums[i]);
+                oGrads[i] = derivative * (desValues[i] - oSums[i]);
+            }
 
-                    for (int i = 0; i < hWeights[hWeights.Length - 1].Length; i++)
-                    {
-                        double derivative = (1 - hSums[numLayers - 1][i]) * (1 + hSums[numLayers - 1][i]);
-                        double sum = 0.0;
-                        for (int j = 0; j < oGrads.Length; j++)
-                        {
-                            double x = oGrads[j] * hoWeights[i][j];
-                            sum += x;
-                        }
-                        hGrads[numLayers - 1][i] = sum * derivative;
-                    }
+            for (int i = 0; i < hWeights[hWeights.Length - 1].Length; i++)
+            {
+                double derivative = (1 - hSums[numLayers - 1][i]) * (1 + hSums[numLayers - 1][i]);
+                double sum = 0.0;
+                for (int j = 0; j < oGrads.Length; j++)
+                {
+                    double x = oGrads[j] * hoWeights[i][j];
+                    sum += x;
+                }
+                hGrads[numLayers - 1][i] = sum * derivative;
+            }
 
-                    for (int i = numLayers - 2; i > -1; i--)
-                    {
-                        for (int j = 0; j < hGrads[i].Length; j++)
-                        {
-                            double derivative = (1 - hSums[i][j]) * (1 + hSums[i][j]);
-                            hGrads[i][j] = derivative * hGrads[i + 1][j];
-                        }
-                    }
-                    break;
-
-                case "normal":
-                    for (int i = 0; i < hGrads.Length; i++)
-                    {
-                        ToZeros(hGrads[i]);
-                    }
-                    ToZeros(oGrads);
-                    desValues[desired] = 1;
-                    for (int i = 0; i < numOutput; i++)
-                    {
-                        double derivative = oSums[i] * (1 - oSums[i]);
-                        oGrads[i] = derivative * (desValues[i] - oSums[i]);
-                    }
-
-                    for (int i = 0; i < hWeights[hWeights.Length - 1].Length; i++)
-                    {
-                        double derivative = (1 - hSums[numLayers - 1][i]) * (1 + hSums[numLayers - 1][i]);
-                        double sum = 0.0;
-                        for (int j = 0; j < oGrads.Length; j++)
-                        {
-                            double x = oGrads[j] * hoWeights[i][j];
-                            sum += x;
-                        }
-                        hGrads[numLayers - 1][i] = sum * derivative;
-                    }
-
-                    for (int i = numLayers - 2; i > -1; i--)
-                    {
-                        for (int j = 0; j < hGrads[i].Length; j++)
-                        {
-                            double derivative = (1 - hSums[i][j]) * (1 + hSums[i][j]);
-                            hGrads[i][j] = derivative * hGrads[i + 1][j];
-                        }
-                    }
-                    break;
+            for (int i = numLayers - 2; i > -1; i--)
+            {
+                for (int j = 0; j < hGrads[i].Length; j++)
+                {
+                    double derivative = (1 - hSums[i][j]) * (1 + hSums[i][j]);
+                    hGrads[i][j] = derivative * hGrads[i + 1][j];
+                }
             }
 
         }
