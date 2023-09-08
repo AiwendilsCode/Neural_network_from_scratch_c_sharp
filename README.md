@@ -13,10 +13,13 @@ Open project in visual studio, install all dependencies (Visual studio will figu
 
 ## Pretrained file formats
 weights = weights\_{numInput}\_{numLayers}\_{numHidden}\_{numOutput}\_{maxPercentage}.txt
+
 biases = biases\_{numLayers}\_{numHidden}\_{numOutput}\_{maxPercentage}.txt
 
 numInput is always 784.
+
 numOutput is always 10.
+
 maxPercentage is percentage which model achieved on training data.
 
 ## Onnx model
