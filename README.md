@@ -2,7 +2,7 @@
 Mnist number recognizing, using neural network from scratch in C#.
 
 ## Setup
-Open project in visual studio, install all dependencies (Visual studio will figure out which you need) and click run. At start of the application all datasets will be loaded in RAM it consumes 800 MB, si first time you start the application it will if you didnt copied minst_train.csv and minst_test.csv into exe directory.
+Open project in visual studio, install all dependencies (Visual studio will figure out which you need) and click run. At start of the application all datasets will be loaded in RAM it consumes 800 MB, first time you start the application it will crash if you didnt copied minst_train.csv and minst_test.csv into exe directory.
 
 ## Buttons in GUI
 - **Train** -> Train neural network with specified parameters in MNISTform.cs, you have to move files mnist_train.csv and mnist_test.csv to exe folder to succesfully train neural network. (The GUI will freeze when training for some time, for how long, that is affected by choosen parameters and CPU.)
