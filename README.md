@@ -11,7 +11,7 @@ Open project in visual studio, install all dependencies (Visual studio will figu
 
 - **Weights from file** -> load weights from pretrained file. Pretrained file must be in exe folder.
 
-## Pretrained file formats
+## Pretrained file name formats
 weights = weights\_{numInput}\_{numLayers}\_{numHidden}\_{numOutput}\_{maxPercentage}.txt
 
 biases = biases\_{numLayers}\_{numHidden}\_{numOutput}\_{maxPercentage}.txt
@@ -20,7 +20,7 @@ numInput is always 784.
 
 numOutput is always 10.
 
-maxPercentage is percentage which model achieved on training data.
+maxPercentage is percentage which model achieved on training data. If you want to laod pretrained model your network must have same architecture as is specified in a filename.
 
 ## Onnx model
 You can use your custom onnx model for testing or use my pretrained one MNIST.onnx, you have to only uncomment some lines in testPrevButton_Click and testNextButton_Click functions also you have to comment lines which runs test on models from my custom neural net files.
